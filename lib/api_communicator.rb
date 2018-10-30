@@ -35,9 +35,12 @@ def get_character_movies_from_api(character)
 
 end
 
-def print_movies(films_hash)
+def print_movies(films_array)
   # some iteration magic and puts out the movies in a nice list
-
+  puts "This character appears in these films:"
+  films_array.each do |film|
+    puts film
+  end
   
 end
 
@@ -45,6 +48,8 @@ def show_character_movies(character)
   films_array = get_character_movies_from_api(character)
   print_movies(films_array)
 end
+
+
 
 ## BONUS
 
