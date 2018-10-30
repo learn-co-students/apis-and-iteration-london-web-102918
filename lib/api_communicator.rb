@@ -18,11 +18,15 @@ def get_character_movies_from_api(character)
     char["name"].downcase == character
   end
 
-  char_films = char_stats[0]["films"]
+  if char_stats == []
+    puts "Star Wars character not found! Please check spelling and try again."
+  else
 
-  char_films.map do |film_link|
-    JSON.parse(RestClient.get(film_link))["title"]
+    char_films = char_stats[0]["films"]
 
+    char_films.map do |film_link|
+      JSON.parse(RestClient.get(film_link))["title"]
+    end
   end
 
   # collect those film API urls, make a web request to each URL to get the info
@@ -41,12 +45,14 @@ def print_movies(films_array)
   films_array.each do |film|
     puts film
   end
-  
+
 end
 
 def show_character_movies(character)
   films_array = get_character_movies_from_api(character)
-  print_movies(films_array)
+    if films_array != nil
+    print_movies(films_array)
+  end
 end
 
 
