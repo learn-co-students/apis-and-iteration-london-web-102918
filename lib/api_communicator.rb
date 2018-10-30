@@ -14,15 +14,15 @@ def get_character_movies_from_api(character)
   # iterate over the response hash to find the collection of `films` for the given
   #   `character`
 
-  char_stats = response_hash["results"].select do |char|
+  char_stats = response_hash["results"].find do |char|
     char["name"].downcase == character
   end
 
-  if char_stats == []
+  if !char_stats
     puts "Star Wars character not found! Please check spelling and try again."
   else
 
-    char_films = char_stats[0]["films"]
+    char_films = char_stats["films"]
 
     char_films.map do |film_link|
       JSON.parse(RestClient.get(film_link))["title"]
@@ -50,7 +50,7 @@ end
 
 def show_character_movies(character)
   films_array = get_character_movies_from_api(character)
-    if films_array != nil
+  if films_array
     print_movies(films_array)
   end
 end
