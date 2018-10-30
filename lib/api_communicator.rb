@@ -23,9 +23,6 @@ def get_character_movies_from_api(character)
 end
 
 
-
-
-
   # iterate over the response hash to find the collection of `films` for the given
   #   `character`
   # collect those film API urls, make a web request to each URL to get the info
@@ -38,9 +35,11 @@ end
 
 
 def print_movies(films_hash)
-  # some iteration magic and puts out the movies in a nice list
-  puts films_hash
+  films_hash.each do |item|
+  puts  item["title"]
+  end
 end
+  # some iteration magic and puts out the movies in a nice list
 
 def show_character_movies(character)
   films_array = get_character_movies_from_api(character)
@@ -50,5 +49,6 @@ end
 
 ## BONUS
 
-# that `get_character_movies_from_api` method is probably pretty long. Does it do more than one job?
+# that `get_character_movies_from_api` method is probably pretty long. Does
+#it do more than one job?
 # can you split it up into helper methods?
