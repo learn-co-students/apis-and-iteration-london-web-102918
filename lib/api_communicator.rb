@@ -6,10 +6,30 @@ def get_character_movies_from_api(character)
   #make the web request
   response_string = RestClient.get('http://www.swapi.co/api/people/')
   response_hash = JSON.parse(response_string)
-  
-  # NOTE: in this demonstration we name many of the variables _hash or _array. 
+
+  # NOTE: in this demonstration we name many of the variables _hash or _array.
   # This is done for educational purposes. This is not typically done in code.
 
+  #1st part getting the character
+  films = []
+    response_hash["results"].each do |char|
+      if char["name"].downcase.include?(character.downcase)
+      #char.each do|stats, value|
+            #if value == character
+
+            char["films"].map do |link|
+              response_string2 = RestClient.get(link)
+              response_hash2 = JSON.parse(response_string2)
+              films << response_hash2["title"]
+            end
+  end
+end
+films
+
+  #2nd part getting the names of the character's films_hash
+
+
+#response_hash2["opening_crawl"][0..139]
 
   # iterate over the response hash to find the collection of `films` for the given
   #   `character`
@@ -22,16 +42,52 @@ def get_character_movies_from_api(character)
   #  of movies by title. play around with puts out other info about a given film.
 end
 
-def print_movies(films_hash)
+def print_movies(films_hash, descriptions_array)
   # some iteration magic and puts out the movies in a nice list
+  descriptions_array.each do |description|
+  films_hash.each_with_index do |film, index|
+  puts "#{index+1}. #{film}"
+  puts "#{description}"
+  puts "--------------------"
+  end
+  end
 end
 
 def show_character_movies(character)
   films_array = get_character_movies_from_api(character)
-  print_movies(films_array)
+  films_descriptions_array = get_character_movies_descriptions_from_api(character)
+  print_movies(films_array, films_descriptions_array)
 end
 
 ## BONUS
 
 # that `get_character_movies_from_api` method is probably pretty long. Does it do more than one job?
 # can you split it up into helper methods?
+
+def get_character_movies_descriptions_from_api(character)
+  #make the web request
+  response_string = RestClient.get('http://www.swapi.co/api/people/')
+  response_hash = JSON.parse(response_string)
+
+  # NOTE: in this demonstration we name many of the variables _hash or _array.
+  # This is done for educational purposes. This is not typically done in code.
+
+  #1st part getting the character
+  descriptions = []
+    response_hash["results"].each do |char|
+      if char["name"].downcase.include?(character.downcase)
+      #char.each do|stats, value|
+            #if value == character
+
+            char["films"].map do |link|
+              response_string2 = RestClient.get(link)
+              response_hash2 = JSON.parse(response_string2)
+              descriptions << response_hash2["opening_crawl"][0..139]
+            end
+  end
+end
+descriptions
+
+#response_hash2["opening_crawl"][0..139]
+
+end
